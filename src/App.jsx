@@ -1,37 +1,27 @@
-import { Routes, Route } from 'react-router-dom';
-
-import Nav from './components/Nav';
-import Home from './components/Home';
-import About from './components/About';
-import Services from './components/Services';
-import Pagenotfound from './components/Pagenotfound';
-import List from './components/LIst';
-import ListItem from './components/Listitem';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { decrement, increment } from './store/reducers/counterSlice'
 
 const App = () => {
-	return (
-		<div className="w-[80%] h-[80%] mt-10 mx-auto p-10 bg-red-200 rounded-xl border-4 border-red-300   ">
-			<Nav />
-			<br />
-			<hr />
-			<br />
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/about" element={<About />} />
-				<Route path="/services" element={<Services />} />
-				{/* <Route path="/list" element={<List />} />
-				<Route path="/list/:i" element={<ListItem />} /> */}
-				<Route path="/list" element={<List />}>
-					<Route path="/list/:i" element={<ListItem />} />
-					{/* the blow one is also correct */}
-					{/* <Route path=":i" element={<ListItem />} /> */}
-				</Route>
+  const dispatch = useDispatch()
+const incrementhandler = () =>{
+  dispatch(increment(value+1))
+}
+const decrementhandler = () =>{
+  dispatch(decrement(value-1))
+}
 
-				{/* for all the wild card routes "*" is used, and this last path should be written in the last of all routes */}
-				<Route path="*" element={<Pagenotfound />} />
-			</Routes>
-		</div>
-	);
-};
+  let { value } = useSelector((state) => state.counter)
+  return (
+    <div className=' p-10 text-white bg-slate-500 text-2xl'>
+      <h1 className='text-5xl '>{value}</h1>
+      <div className='text-lg mt-10 flex gap-4'>
+        <button className='bg-green-500 px-5 py-1 rounded ' onClick={incrementhandler}>Increment by 1</button>
+        <button className='bg-red-500 px-5 py-1 rounded ' onClick={decrementhandler}>Decrement by 1</button>
 
-export default App;
+      </div>
+    </div>
+  )
+}
+
+export default App
